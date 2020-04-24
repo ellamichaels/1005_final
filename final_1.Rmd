@@ -1,0 +1,41 @@
+---
+title: "Final Project"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(gt)
+
+```
+
+```{r loading data, getting zips}
+
+# read in data
+g1 <- read.csv("goodwill_data/ella1.csv")
+g2 <- read.csv("goodwill_data/ella2.csv")
+g3 <- read.csv("goodwill_data/ella3.csv")
+g4 <- read.csv("goodwill_data/ella4.csv")
+g5 <- read.csv("goodwill_data/ella5.csv")
+g6 <- read.csv("goodwill_data/ella6.csv")
+g7 <- read.csv("goodwill_data/ella7.csv")
+g8 <- read.csv("goodwill_data/ella8.csv")
+
+# function to create zip code column
+get_zip <- function(data) {
+  
+  data %>% 
+    rowwise() %>% # affect each row instead of just the first
+    mutate(zip = str_split_fixed(address, ", usa", 2)[1]) %>% # get first part of address before ", usa"
+    mutate(zip = str_extract(zip, "(?<= )[^ ]*$")) # get the last characters preceded by a space before the end of the string to get the zip
+  
+}
+
+g1z <- get_zip(g1)
+g2z <- get_zip(g2)
+
+
+```
+
